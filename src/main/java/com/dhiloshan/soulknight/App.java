@@ -6,8 +6,12 @@ import com.studiohartman.jamepad.ControllerState;
 import com.studiohartman.jamepad.ControllerUnpluggedException;
 
 import javax.swing.*;
+import javax.imageio.*;
+
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
+
 
 public class App extends JPanel {
 
@@ -18,10 +22,15 @@ public class App extends JPanel {
 	public float x = 200, y = 150;
 	public boolean wasAPressed = false;
 	
+	Data data;
+	
 
 	public App() { // constructor
 		setPreferredSize(new Dimension(900, 550));
 		setBackground(Color.BLACK);
+		
+		loadController();
+		
 		// 60 FPS (1000 ms / 16 ms)
 		timer = new Timer(16, new ActionListener() {   // have to create an actionlistener object to run the update method (part of timer api)
 			@Override
@@ -53,7 +62,7 @@ public class App extends JPanel {
 			e.printStackTrace();
 		}
 	}
-
+	
 	// -- start and stop the timer (game)
 	void startLoop() {
 		timer.start();
@@ -124,11 +133,11 @@ public class App extends JPanel {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g.create();
 
-		g2.setColor(Color.WHITE);
+		if (data.cactus != null)
+			g2.drawImage(data.cactus, Math.round(x), Math.round(y), this);
 		g2.drawString("Controller #0: left stick moves, A rumbles.", 18, 24);
 
-		g2.setColor(Color.GREEN);
-		g2.fillOval(Math.round(x) - 18, Math.round(y) - 18, 36, 36);
+	
 
 		g2.dispose();
 	}
@@ -137,8 +146,6 @@ public class App extends JPanel {
 		System.out.println("Soul Knight (Swing) started!");
 
 		JFrame frame = new JFrame("Soul Knight");
-		
-		loadController();
 		
 		App panel = new App();
 		frame.setContentPane(panel);
