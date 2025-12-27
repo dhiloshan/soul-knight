@@ -111,7 +111,7 @@ public class App extends JPanel {
 		data.player.render(g2); // render the player
 		
 		try { // display player stats
-			data.player.displayExternal(g2);
+			data.player.displayStatBar(g2);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
