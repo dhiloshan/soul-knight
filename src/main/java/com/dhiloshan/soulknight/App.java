@@ -16,18 +16,19 @@ import java.io.*;
 public class App extends JPanel {
 
 	public static ControllerManager pads;
-	public final Timer timer;
+	public static Timer timer;
 	public static ControllerIndex controller;
-
-	public float x = 200, y = 150;
-	public boolean wasAPressed = false;
+	public static ControllerState s;
 	
-	Data data;
+
+	public static int screenWidth = 1200, screenHeight = 800;
+	
+	Data data; // contains all the assets and classes
 	
 
 	public App() { // constructor
-		setPreferredSize(new Dimension(900, 550));
-		setBackground(Color.BLACK);
+		setPreferredSize(new Dimension(screenWidth, screenHeight));
+		setBackground(Color.WHITE);
 		
 		loadController();
 		
@@ -75,44 +76,18 @@ public class App extends JPanel {
 	public void update() {
 		// -- check if controller is connected
 		pads.update();
-		ControllerState s = pads.getState(0);
+		s = pads.getState(0);
 		if (!s.isConnected) {
 			repaint();
 			return;
 		}
-
-		// -- Move with left joy stick stick
-		float lx = deadzone(s.leftStickX, 0.15f);
-		float ly = deadzone(s.leftStickY, 0.15f);
-
-		float speed = 3f;
-		x += lx * speed;
-		y += ly * speed;
-
-		// stay in bound [20, w or height - 20]
-		x = Math.max(20, Math.min(getWidth() - 20, x));
-		y = Math.max(20, Math.min(getHeight() - 20, y));
 		
-		// -- if a is pressed ONLY now
-		boolean a = s.a; 
-		if (a && !wasAPressed) { 
-			rumble(1.0f, 1.0f, 250);
-		}
-		wasAPressed = a;
+		data.player.move();
 		
 		repaint();
 	}
-
-	public static float deadzone(float v, float dz) { // very minor joy stick movement shouldn't create player movement
-		if(Math.abs(v) < dz) {
-			return 0f;
-		}
-		else {
-			return v;
-		}
-	}
 	
-	public void rumble(float left, float right, int ms) { // helper function
+	public static void rumble(float left, float right, int ms) { // helper function
 		try {
 			boolean vibrateCur = controller.doVibration(left, right, ms);
 			if(vibrateCur) {
@@ -131,15 +106,18 @@ public class App extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Graphics2D g2 = (Graphics2D) g.create();
+		Graphics2D g2 = (Graphics2D) g.create(); // encompasses all the graphics for one frame
 
-		if (data.cactus != null)
-			g2.drawImage(data.cactus, Math.round(x), Math.round(y), this);
-		g2.drawString("Controller #0: left stick moves, A rumbles.", 18, 24);
+		data.player.render(g2); // render the player
+		
+		try { // display player stats
+			data.player.displayExternal(g2);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-	
-
-		g2.dispose();
+		g2.dispose(); // get rid of all the graphics and redraw them in their new positions in the next frame
 	}
 
 	public static void main(String[] args) {
