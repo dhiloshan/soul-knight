@@ -108,7 +108,7 @@ public class App extends JPanel {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g.create(); // encompasses all the graphics for one frame
 
-		data.player.render(g2); // render the player
+		data.player.drawCharacter(g2); // render the player
 		
 		try { // display player stats
 			data.player.displayStatBar(g2);

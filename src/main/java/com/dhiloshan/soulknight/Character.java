@@ -10,9 +10,9 @@ public class Character {
 	Image sprite; // image path
 
 	public Character(Image sprite, int width, int height, int sx, int sy) {
+		this.sprite = sprite;
 		this.width = width;
 		this.height = height;
-		this.sprite = sprite;
 		this.x = sx;
 		this.y = sy;
 	}
@@ -23,6 +23,6 @@ public class Character {
 		}
 		g.drawImage(sprite, x, y, width, height, null);
 	}
-	
+
 
 }

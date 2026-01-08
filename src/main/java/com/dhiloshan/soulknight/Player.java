@@ -12,12 +12,13 @@ import javax.swing.ImageIcon;
 public class Player extends Character {
 
 	boolean wasAPressed = false;
+	boolean isFacingLeft = false;
 	float speed = 6.7f;
 
 	int maxHealth = 7, health = (int) (Math.random() * maxHealth);
 	int maxShield = 6, shield = (int) (Math.random() * maxShield);
 	int maxEnergy = 180, energy = (int) (Math.random() * maxEnergy);
-
+ 
 	public Player(int width, int height, int sx, int sy) {
 		super( // the actual parameters for the constructor in the superclass, Character
 				new ImageIcon(App.class.getResource("/assets/images/characters/knight.gif")).getImage(), width, height,
@@ -69,7 +70,7 @@ public class Player extends Character {
 			g2.setColor(emptyBottom[i]);
 			g2.fillRoundRect(70, sy + 20, 180, 20, 10, 10); // bottom empty part
 
-			g2.setColor(Color.BLACK);
+			g2.setColor(Color.BLACK);	
 			g2.drawRoundRect(70, sy, 180, 40, 10, 10); // outer border
 
 			int barWidth = getStatBarWidth(180, curVals[i], maxVals[i]);
@@ -90,11 +91,10 @@ public class Player extends Character {
 	}
 
 	public void move() {
-		// -- Move with left joy stick
-		float lx = deadzone(App.s.leftStickX, 0.15f);
+		float lx = deadzone(App.s.leftStickX, 0.15f); 
 		float ly = deadzone(App.s.leftStickY, 0.15f);
 
-		x += lx * speed;
+		x += lx * speed; 
 		y += ly * speed;
 
 		// stay in bound [20, w or height - 20]
@@ -109,9 +109,27 @@ public class Player extends Character {
 
 		// -- if a is pressed ONLY now
 		boolean a = App.s.a;
-		if (a && !wasAPressed) {
-			App.rumble(1.0f, 1.0f, 250);
+		if (a && App.s.a) {
+			App.rumble(1.0f, 1.0f, 10000);
 		}
 		wasAPressed = a;
+		
+		if(!isFacingLeft && App.s.leftStickX < -0.1) {
+			isFacingLeft = true;
+		}
+		else if(isFacingLeft && App.s.leftStickX > 0.1) { // 0.10 is threshold
+			isFacingLeft = false;
+		}
+	}
+	
+	public void drawCharacter(Graphics2D g) {
+		if(isFacingLeft) {
+			g.drawImage(sprite, x + width, y, -width, height, null);
+		}
+		else {
+			g.drawImage(sprite, x, y, width, height, null);
+		}
+		
+		System.out.println(App.s.leftStickX);
 	}
 }
