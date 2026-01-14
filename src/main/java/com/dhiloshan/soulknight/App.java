@@ -18,13 +18,9 @@ public class App extends JPanel {
 	public static ControllerManager pads;
 	public static Timer timer;
 	public static ControllerIndex controller;
-	public static ControllerState s;
+	public static ControllerState controllerState;
 	
-
-	public static int screenWidth = 1200, screenHeight = 800;
-	
-	Data data; // contains all the assets and classes
-	
+	public static int screenWidth = 1500, screenHeight = 800;
 
 	public App() { // constructor
 		setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -76,13 +72,15 @@ public class App extends JPanel {
 	public void update() {
 		// -- check if controller is connected
 		pads.update();
-		s = pads.getState(0);
-		if (!s.isConnected) {
+		controllerState = pads.getState(0);
+		
+		if (!controllerState.isConnected) {
 			repaint();
 			return;
 		}
 		
-		data.player.move();
+		Data.player.move();
+		Data.weapon.shoot();
 		
 		repaint();
 	}
@@ -108,10 +106,13 @@ public class App extends JPanel {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g.create(); // encompasses all the graphics for one frame
 
-		data.player.drawCharacter(g2); // render the player
+		Data.player.drawCharacter(g2); // render the player
+		Data.weapon.render(g2, 27, 19);
+		Data.weapon.updateBullets(g2);
+
 		
-		try { // display player stats
-			data.player.displayStatBar(g2);
+		try { // display player status
+			Data.player.displayStatBar(g2);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -5,8 +5,8 @@ import java.awt.Image;
 
 public class Character {
 	
-	int x, y; // top left corner of the character
-	int width, height;
+	public int x, y; // top left corner of the character
+	public int width, height;
 	Image sprite; // image path
 
 	public Character(Image sprite, int width, int height, int sx, int sy) {
@@ -16,13 +16,5 @@ public class Character {
 		this.x = sx;
 		this.y = sy;
 	}
-	
-	public void render(Graphics2D g) {
-		if(sprite == null) { // path doesn't exist
-			throw new IllegalStateException("Sprite is null right now.");
-		}
-		g.drawImage(sprite, x, y, width, height, null);
-	}
-
 
 }

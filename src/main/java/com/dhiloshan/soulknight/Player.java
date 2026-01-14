@@ -12,7 +12,7 @@ import javax.swing.ImageIcon;
 public class Player extends Character {
 
 	boolean wasAPressed = false;
-	boolean isFacingLeft = false;
+	public boolean isFacingLeft = false;
 	float speed = 6.7f;
 
 	int maxHealth = 7, health = (int) (Math.random() * maxHealth);
@@ -45,9 +45,9 @@ public class Player extends Character {
 		
 		// ORDER: health, shield, energy
 
-		g2.drawImage(ImageIO.read(App.class.getResource("/assets/images/misc/heart_icon.png")), 20, 20, null);
-		g2.drawImage(ImageIO.read(App.class.getResource("/assets/images/misc/shield_icon.png")), 20, 70, null);
-		g2.drawImage(ImageIO.read(App.class.getResource("/assets/images/misc/energy_icon.png")), 20, 120, null);
+		g2.drawImage(ImageIO.read(App.class.getResource("/assets/images/misc/heart_icon.png")), 15, 20, 50, 40, null);
+		g2.drawImage(ImageIO.read(App.class.getResource("/assets/images/misc/shield_icon.png")), 20, 70, 50, 40, null);
+		g2.drawImage(ImageIO.read(App.class.getResource("/assets/images/misc/energy_icon.png")), 20, 120, 50, 40, null);
 
 		
 		Color[] emptyTop = { new Color(224, 165, 157), new Color(200, 200, 200), new Color(160, 190, 230) };
@@ -91,8 +91,8 @@ public class Player extends Character {
 	}
 
 	public void move() {
-		float lx = deadzone(App.s.leftStickX, 0.15f); 
-		float ly = deadzone(App.s.leftStickY, 0.15f);
+		float lx = deadzone(App.controllerState.leftStickX, 0.15f); 
+		float ly = deadzone(App.controllerState.leftStickY, 0.15f);
 
 		x += lx * speed; 
 		y += ly * speed;
@@ -108,28 +108,31 @@ public class Player extends Character {
 			y = App.screenHeight - 20;
 
 		// -- if a is pressed ONLY now
-		boolean a = App.s.a;
-		if (a && App.s.a) {
-			App.rumble(1.0f, 1.0f, 10000);
+		if (App.controllerState != null && App.controllerState.aJustPressed) {
+			App.rumble(0.2f, 0.2f, 10000);
 		}
-		wasAPressed = a;
 		
-		if(!isFacingLeft && App.s.leftStickX < -0.1) {
+		// stop vibration
+		if(App.controllerState != null && App.controllerState.xJustPressed) {
+			App.rumble(0.0f, 0.0f, 0);
+		}
+		
+		if(!isFacingLeft && App.controllerState.leftStickX < -0.1) {
 			isFacingLeft = true;
 		}
-		else if(isFacingLeft && App.s.leftStickX > 0.1) { // 0.10 is threshold
+		else if(isFacingLeft && App.controllerState.leftStickX > 0.1) { // 0.10 is threshold
 			isFacingLeft = false;
 		}
 	}
 	
-	public void drawCharacter(Graphics2D g) {
+	public void drawCharacter(Graphics2D g2) {
 		if(isFacingLeft) {
-			g.drawImage(sprite, x + width, y, -width, height, null);
+			g2.drawImage(sprite, x + width, y, -width, height, null);
 		}
 		else {
-			g.drawImage(sprite, x, y, width, height, null);
+			g2.drawImage(sprite, x, y, width, height, null);
 		}
-		
-		System.out.println(App.s.leftStickX);
 	}
+
+
 }
