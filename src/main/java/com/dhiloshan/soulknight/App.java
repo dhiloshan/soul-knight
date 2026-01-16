@@ -11,6 +11,7 @@ import javax.imageio.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import javax.sound.sampled.*;
 
 
 public class App extends JPanel {
@@ -20,13 +21,23 @@ public class App extends JPanel {
 	public static ControllerIndex controller;
 	public static ControllerState controllerState;
 	
-	public static int screenWidth = 1500, screenHeight = 800;
+	public static int screenWidth = 1515, screenHeight = 910;
+	
+	Clip background;
 
 	public App() { // constructor
 		setPreferredSize(new Dimension(screenWidth, screenHeight));
 		setBackground(Color.WHITE);
 		
 		loadController();
+		
+		try {
+			AudioInputStream sound = AudioSystem.getAudioInputStream(App.class.getResource("/assets/audio/background-music/level-1-bg.wav"));
+			background = AudioSystem.getClip();
+			background.open(sound);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		// 60 FPS (1000 ms / 16 ms)
 		timer = new Timer(16, new ActionListener() {   // have to create an actionlistener object to run the update method (part of timer api)
@@ -35,6 +46,8 @@ public class App extends JPanel {
 				update();
 			}
 		}); 
+		
+		// background.start();
 	}
 	
 	public static void loadController() {
@@ -105,10 +118,12 @@ public class App extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g.create(); // encompasses all the graphics for one frame
+		Data.map.render(g2);
 
-		Data.player.drawCharacter(g2); // render the player
+		Data.player.render(g2); // render the player
 		Data.weapon.render(g2, 27, 19);
 		Data.weapon.updateBullets(g2);
+		Data.trumpetFlower.update(g2);
 
 		
 		try { // display player status

@@ -24,11 +24,14 @@ public class Bullet {
 	public boolean offScreen() {
 		if(sx + width >= App.screenWidth || sx < 0) {
 			return true;
-		}
+		} 
 		return false;
 	}
-	
-	public void bulletCollision() { 
+	/*
+	public boolean bulletCollision(int ex, int ey, int ewidth, int eheight) { 
 		// if it collides with an enemy
+		int rit = sx + width, lft = sx - width, tp = sy + height, below = sy - height;
+		if((rit > ex && )|| lft < ex)
 	}
+	*/
 }

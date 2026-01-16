@@ -13,7 +13,7 @@ public class Weapon {
 	
 	protected Image sprite;
 	protected String weaponName;
-	protected long prevShot = 0L;
+	protected long prevShot = 0L; // time stamp of previous shot in milliseconds
 	
 	public Weapon(String weaponName, Image sprite) {
 		this.weaponName = weaponName;

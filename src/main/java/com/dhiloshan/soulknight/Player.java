@@ -2,6 +2,7 @@ package com.dhiloshan.soulknight;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.io.IOException;
@@ -12,7 +13,6 @@ import javax.swing.ImageIcon;
 public class Player extends Character {
 
 	boolean wasAPressed = false;
-	public boolean isFacingLeft = false;
 	float speed = 6.7f;
 
 	int maxHealth = 7, health = (int) (Math.random() * maxHealth);
@@ -38,56 +38,67 @@ public class Player extends Character {
 	}
 
 	public void displayStatBar(Graphics2D g2) throws IOException {
-		g2.setColor(new Color(180, 150, 120));
-		g2.fillRoundRect(16, 16, 250, 160, 20, 20);
-		g2.setColor(new Color(92, 64, 51));
-		g2.drawRoundRect(16, 16, 250, 160, 20, 20);
-		
-		// ORDER: health, shield, energy
+	    int panelX = 16, panelY = 16, panelW = 260, panelH = 120;
 
-		g2.drawImage(ImageIO.read(App.class.getResource("/assets/images/misc/heart_icon.png")), 15, 20, 50, 40, null);
-		g2.drawImage(ImageIO.read(App.class.getResource("/assets/images/misc/shield_icon.png")), 20, 70, 50, 40, null);
-		g2.drawImage(ImageIO.read(App.class.getResource("/assets/images/misc/energy_icon.png")), 20, 120, 50, 40, null);
+	    g2.setColor(new Color(205, 170, 135));
+	    g2.fillRoundRect(panelX + 3, panelY + 3, panelW, panelH, 16, 16);
 
-		
-		Color[] emptyTop = { new Color(224, 165, 157), new Color(200, 200, 200), new Color(160, 190, 230) };
+	    g2.setColor(new Color(186, 150, 118));
+	    g2.fillRoundRect(panelX, panelY, panelW, panelH, 16, 16);
 
-		Color[] emptyBottom = { new Color(209, 139, 132), new Color(170, 170, 170), new Color(130, 165, 210) };
+	    g2.setColor(new Color(240, 215, 185));
+	    g2.drawRoundRect(panelX + 1, panelY + 1, panelW - 2, panelH - 2, 16, 16);
 
-		Color[] fillTop = { new Color(214, 47, 17), new Color(170, 170, 170), new Color(70, 120, 220) };
+	    g2.setColor(new Color(92, 64, 51));
+	    g2.drawRoundRect(panelX, panelY, panelW, panelH, 16, 16);
 
-		Color[] fillBottom = { new Color(156, 31, 17), new Color(130, 130, 130), new Color(50, 90, 180) };
+	    g2.drawImage(ImageIO.read(App.class.getResource("/assets/images/misc/health_icon.png")), 24, 26, 28, 28, null);
+	    g2.drawImage(ImageIO.read(App.class.getResource("/assets/images/misc/shield_icon.png")), 24, 62, 28, 28, null);
+	    g2.drawImage(ImageIO.read(App.class.getResource("/assets/images/misc/energy_icon.png")), 24, 98, 28, 28, null);
 
-		int[] curVals = { health, shield, energy };
-		int[] maxVals = { maxHealth, maxShield, maxEnergy };
+	    Color[] empty = {
+	        new Color(230, 140, 135),
+	        new Color(190, 190, 190),
+	        new Color(150, 180, 220)
+	    };
 
-		// -- Status Bars
-		for (int i = 0; i < 3; i++) {
-			g2.setColor(emptyTop[i]);
-			int sy = 25 + i * 50;
-			g2.fillRoundRect(70, sy, 180, 20, 10, 10); // empty part
+	    Color[] fill = {
+	        new Color(215, 60, 55),
+	        new Color(165, 165, 165),
+	        new Color(60, 130, 210)
+	    };
 
-			g2.setColor(emptyBottom[i]);
-			g2.fillRoundRect(70, sy + 20, 180, 20, 10, 10); // bottom empty part
+	    int[] cur = { health, shield, energy };
+	    int[] max = { maxHealth, maxShield, maxEnergy };
 
-			g2.setColor(Color.BLACK);	
-			g2.drawRoundRect(70, sy, 180, 40, 10, 10); // outer border
+	    g2.setFont(new Font("Pixelify Sans", Font.BOLD, 18));
+	    FontMetrics fm = g2.getFontMetrics();
 
-			int barWidth = getStatBarWidth(180, curVals[i], maxVals[i]);
-			g2.setColor(fillTop[i]);
-			g2.fillRoundRect(70, sy, barWidth, 40, 10, 10); // filled part
+	    for (int i = 0; i < 3; i++) {
+	        int x = 60;
+	        int y = 26 + i * 36;
+	        int w = 190;
+	        int h = 22;
 
-			g2.setColor(fillBottom[i]);
-			g2.fillRoundRect(70, sy + 20, barWidth, 20, 10, 10); // bottom filled part
+	        g2.setColor(empty[i]);
+	        g2.fillRoundRect(x, y, w, h, 8, 8);
 
-			g2.setColor(Color.BLACK);
-			g2.drawRoundRect(70, sy, barWidth, 40, 10, 10); // inner border
+	        int fw = getStatBarWidth(w, cur[i], max[i]);
+	        g2.setColor(fill[i]);
+	        g2.fillRoundRect(x, y, fw, h, 8, 8);
 
-			String status = curVals[i] + "/" + maxVals[i];
-			g2.setColor(Color.WHITE);
-			g2.setFont(new Font("Pixelify Sans", Font.BOLD, 22));
-			g2.drawString(status, 140, 53 + i * 50);
-		}
+	        g2.setColor(new Color(40, 40, 40));
+	        g2.drawRoundRect(x, y, w, h, 8, 8);
+
+	        String txt = cur[i] + "/" + max[i];
+	        int tx = x + (w - fm.stringWidth(txt)) / 2;
+	        int ty = y + (h + fm.getAscent()) / 2 - 1;
+
+	        g2.setColor(new Color(0, 0, 0, 150));
+	        g2.drawString(txt, tx + 1, ty + 1);
+	        g2.setColor(Color.WHITE);
+	        g2.drawString(txt, tx, ty);
+	    }
 	}
 
 	public void move() {
@@ -125,14 +136,6 @@ public class Player extends Character {
 		}
 	}
 	
-	public void drawCharacter(Graphics2D g2) {
-		if(isFacingLeft) {
-			g2.drawImage(sprite, x + width, y, -width, height, null);
-		}
-		else {
-			g2.drawImage(sprite, x, y, width, height, null);
-		}
-	}
 
 
 }
