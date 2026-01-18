@@ -121,7 +121,7 @@ public class App extends JPanel {
 		Data.map.render(g2);
 
 		Data.player.render(g2); // render the player
-		Data.weapon.render(g2, 27, 19);
+		Data.weapon.render(g2);
 		Data.weapon.updateBullets(g2);
 		Data.trumpetFlower.update(g2);
 
@@ -150,13 +150,17 @@ public class App extends JPanel {
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				panel.stopLoop();
-				try {
-					pads.quitSDLGamepad();
-				} catch (Throwable ignored) {
-				}
-				frame.dispose();
-				System.exit(0);
+			    new Thread(() -> {
+			        try {
+			            if (pads != null) {
+			                pads.quitSDLGamepad();
+			            }
+			        } catch (Exception ex) {
+			            ex.printStackTrace();
+			        } finally {
+			            System.exit(0);
+			        }
+			    }).start();
 			}
 		});
 

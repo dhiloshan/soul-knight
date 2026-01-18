@@ -18,10 +18,19 @@ public class Player extends Character {
 	int maxHealth = 7, health = (int) (Math.random() * maxHealth);
 	int maxShield = 6, shield = (int) (Math.random() * maxShield);
 	int maxEnergy = 180, energy = (int) (Math.random() * maxEnergy);
+	
+	Image spriteL = new ImageIcon(App.class.getResource("/assets/images/characters/knight-l.gif")).getImage();
+	Image spriteR = new ImageIcon(App.class.getResource("/assets/images/characters/knight-r.gif")).getImage();
+	boolean isMoving = false;
+	boolean leftGif = true;
+	
+	boolean walkingFrameLeft = true;
+	long lastStepTime = 0;
+	static final long STEP_MS = 200; // adjust: smaller = faster stepping
  
 	public Player(int width, int height, int sx, int sy) {
 		super( // the actual parameters for the constructor in the superclass, Character
-				new ImageIcon(App.class.getResource("/assets/images/characters/knight.gif")).getImage(), width, height,
+				new ImageIcon(App.class.getResource("/assets/images/characters/knight-d.gif")).getImage(), width, height,
 				sx, sy);
 	}
 
@@ -102,40 +111,52 @@ public class Player extends Character {
 	}
 
 	public void move() {
-		float lx = deadzone(App.controllerState.leftStickX, 0.15f); 
-		float ly = deadzone(App.controllerState.leftStickY, 0.15f);
+	    if (App.controllerState == null) return;
 
-		x += lx * speed; 
-		y += ly * speed;
+	    float lx = deadzone(App.controllerState.leftStickX, 0.15f);
+	    float ly = deadzone(App.controllerState.leftStickY, 0.15f);
 
-		// stay in bound [20, w or height - 20]
-		if (x < 20)
-			x = 20;
-		else if (x > App.screenWidth - 20)
-			x = App.screenWidth - 20;
-		if (y < 20)
-			y = 20;
-		else if (y > App.screenHeight - 20)
-			y = App.screenHeight - 20;
+	    float dx = lx * speed;
+	    float dy = ly * speed;
 
-		// -- if a is pressed ONLY now
-		if (App.controllerState != null && App.controllerState.aJustPressed) {
-			App.rumble(0.2f, 0.2f, 10000);
-		}
-		
-		// stop vibration
-		if(App.controllerState != null && App.controllerState.xJustPressed) {
-			App.rumble(0.0f, 0.0f, 0);
-		}
-		
-		if(!isFacingLeft && App.controllerState.leftStickX < -0.1) {
-			isFacingLeft = true;
-		}
-		else if(isFacingLeft && App.controllerState.leftStickX > 0.1) { // 0.10 is threshold
-			isFacingLeft = false;
-		}
+	    x += dx;
+	    y += dy;
+
+	    x = Math.max(Data.weapon.width, Math.min(x, App.screenWidth - (width + Data.weapon.width + 10)));
+	    y = Math.max(Data.weapon.height, Math.min(y, App.screenHeight - (height + Data.weapon.height + 10)));
+
+	    if (lx < -0.1f) isFacingLeft = true;
+	    else if (lx > 0.1f) isFacingLeft = false;
+
+	    boolean movingNow = (Math.abs(dx) + Math.abs(dy)) > 0.01f;
+	    isMoving = movingNow;
+
+	    if (isMoving) {
+	        long now = System.currentTimeMillis();
+	        if (now - lastStepTime >= STEP_MS) {
+	            walkingFrameLeft = !walkingFrameLeft;
+	            lastStepTime = now;
+	        }
+	    } else {
+	        walkingFrameLeft = true;
+	    }
 	}
 	
+	public void render(Graphics2D g2) {
+	    Image spriteCur;
+
+	    if (!isMoving) {
+	        spriteCur = sprite; // standing still
+	    } else {
+	        spriteCur = walkingFrameLeft ? spriteL : spriteR;
+	    }
+
+	    if (isFacingLeft) {
+	        g2.drawImage(spriteCur, x + width, y, -width, height, null);
+	    } else {
+	        g2.drawImage(spriteCur, x, y, width, height, null);
+	    }
+	}
 
 
 }

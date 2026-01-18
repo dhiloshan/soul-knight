@@ -13,16 +13,16 @@ public class BadPistol extends Weapon {
 	int reloadTime = 400;
 	
 	public BadPistol() {
-		super ("Bad Pistol", new ImageIcon(App.class.getResource("/assets/images/weapons/Bad_Pistol.png")).getImage());
+		super ("Bad Pistol", new ImageIcon(App.class.getResource("/assets/images/weapons/Bad_Pistol.png")).getImage(), 27, 19);
 		bullets = new ArrayList<Bullet>();
 	}
 	
-	public void render(Graphics2D g2, int width, int height) {
+	public void render(Graphics2D g2) {
 		if(Data.player.isFacingLeft) {
-			g2.drawImage(sprite, Data.player.x + 15, Data.player.y + Data.player.height / 2 + 5, -width, height, null);
+			g2.drawImage(sprite, Data.player.x + 10, Data.player.y + Data.player.height / 2 + 5, -width, height, null);
 		}
 		else {
-			g2.drawImage(sprite, Data.player.x + Data.player.width - 14, Data.player.y + Data.player.height / 2 + 5, width, height, null);
+			g2.drawImage(sprite, Data.player.x + Data.player.width - 10, Data.player.y + Data.player.height / 2 + 5, width, height, null);
 		}
 	}
 	
