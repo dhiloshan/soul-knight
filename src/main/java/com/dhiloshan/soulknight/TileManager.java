@@ -30,24 +30,30 @@ public class TileManager {
 		
 		tile[1] = new Tile();
 		tile[1].image = new ImageIcon(App.class.getResource("/assets/images/map/wall.png")).getImage(); 
+		tile[1].collision = true;
 
 		tile[2] = new Tile();
 		tile[2].image = new ImageIcon(App.class.getResource("/assets/images/map/big_tree.png")).getImage();
+		tile[2].collision = true;
 		
 		tile[3] = new Tile();
 		tile[3].image = new ImageIcon(App.class.getResource("/assets/images/map/spikes.png")).getImage();
 
 		tile[4] = new Tile();
 		tile[4].image = new ImageIcon(App.class.getResource("/assets/images/map/crate.png")).getImage();
+		tile[4].collision = true;
 		
 		tile[5] = new Tile();
 		tile[5].image = new ImageIcon(App.class.getResource("/assets/images/map/crate2.png")).getImage();
+		tile[5].collision = true;
 		
 		tile[6] = new Tile();
 		tile[6].image = new ImageIcon(App.class.getResource("/assets/images/map/totem.png")).getImage();
+		tile[6].collision = true;
 		
 		tile[7] = new Tile();
 		tile[7].image = new ImageIcon(App.class.getResource("/assets/images/map/unbreakable_crate.png")).getImage();
+		tile[7].collision = true;
 		
 		tile[8] = new Tile();
 		tile[8].image = new ImageIcon(App.class.getResource("/assets/images/map/blank.png")).getImage();

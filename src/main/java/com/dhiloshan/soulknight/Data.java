@@ -14,6 +14,7 @@ public class Data {
 	public static HUD hud = new HUD();
 	public static Map map = new Map();
 	public static TileManager tileM = new TileManager(null);
+	public static CollisionChecker cChecker = new CollisionChecker( );
 	public static Player player = new Player(90, 90, 760, 455);
 	public static BadPistol weapon = new BadPistol();
 	public static ArrayList<Enemy> enemies = new ArrayList<Enemy>();

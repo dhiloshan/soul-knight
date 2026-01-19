@@ -40,6 +40,7 @@ public class App extends JPanel {
 			e.printStackTrace();
 		}
 		
+		
 		// 60 FPS (1000 ms / 16 ms)
 		timer = new Timer(16, new ActionListener() {   // have to create an actionlistener object to run the update method (part of timer api)
 			@Override
@@ -124,7 +125,7 @@ public class App extends JPanel {
 		Data.player.render(g2); // render the player
 		Data.weapon.render(g2);
 		Data.weapon.updateBullets(g2);
-		Data.trumpetFlower.update(g2);
+		// Data.trumpetFlower.update(g2);
 
 		
 		try { // display player status
