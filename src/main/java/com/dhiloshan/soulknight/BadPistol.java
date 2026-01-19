@@ -35,6 +35,7 @@ public class BadPistol extends Weapon {
 				bullets.add(new Bullet(bulletSprite, Data.player.x + Data.player.width + 15, Data.player.y + Data.player.height / 2 + 2, 30, 15, false));
 			}
 			prevShot = System.currentTimeMillis();
+			App.rumble(0.3f, 0.3f, 150);
 		}
 		System.out.println(bullets.size());
 	}

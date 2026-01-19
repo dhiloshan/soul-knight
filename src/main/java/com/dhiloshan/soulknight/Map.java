@@ -35,7 +35,6 @@ public class Map {
 		}
 		*/
 		
-		g2.drawRect(1300, 10, 200, 200); // map overview
 	}
 
 }

@@ -127,7 +127,8 @@ public class App extends JPanel {
 
 		
 		try { // display player status
-			Data.player.displayStatBar(g2);
+			Data.hud.displayStatBar(g2);
+			Data.hud.drawHUD(g2);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
