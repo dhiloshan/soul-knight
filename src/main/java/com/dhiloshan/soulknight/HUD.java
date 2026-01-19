@@ -112,7 +112,7 @@ public class HUD {
 	    int coinTextW = g2.getFontMetrics().stringWidth(coinStr);
 	    
 	    // coin text
-	    g2.setColor(Color.BLACK);
+	    g2.setColor(Color.WHITE);
 	    g2.drawString(coinStr, px - 100 - coinTextW, py + 35);
 	    
 	    // coin icon
@@ -132,7 +132,7 @@ public class HUD {
 	    
 	    // Level Text (e.g. 1-3) centered below map area
 	    g2.setFont(new Font("Pixelify Sans", Font.BOLD, 25));
-	    g2.setColor(Color.BLACK);
+	    g2.setColor(Color.WHITE);
 	    g2.drawString(levelText, w - 135, 250);
 	    
 	    // joystick appearance

@@ -17,4 +17,5 @@ public class Data {
 	public static Enemy trumpetFlower = new Enemy("Trumpet Flower", new ImageIcon(App.class.getResource("/assets/images/characters/TrumpetFlower.png")).getImage(), 55, 55, 600, 100);
 	public static Map map = new Map();
 	public static HUD hud = new HUD();
+	public static TileManager tileM = new TileManager(null);
 }

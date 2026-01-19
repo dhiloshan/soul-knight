@@ -118,7 +118,7 @@ public class App extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g.create(); // encompasses all the graphics for one frame
-		Data.map.render(g2);
+		Data.tileM.render(g2);
 
 		Data.player.render(g2); // render the player
 		Data.weapon.render(g2);
