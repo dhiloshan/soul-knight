@@ -17,6 +17,9 @@ public class Player extends Character {
 	
 	public static float lx = 0f;
 	public static float ly = 0f;
+	
+	public final int screenX;
+	public final int screenY;
 
 	boolean wasAPressed = false;
 	float speed = 6.7f;
@@ -38,6 +41,11 @@ public class Player extends Character {
 		super( // the actual parameters for the constructor in the superclass, Character
 				new ImageIcon(App.class.getResource("/assets/images/characters/knight-d.gif")).getImage(), width, height,
 				sx, sy);
+		
+		worldX = App.tileSize * 140;
+		worldY = App.tileSize * 180;
+		screenX = App.screenWidth / 2 - App.tileSize/2;;
+		screenY = App.screenHeight / 2 - App.tileSize/2;
 	}
 
 	public float deadzone(float v, float dz) { // very minor joy stick movement shouldn't create player movement
@@ -58,11 +66,11 @@ public class Player extends Character {
 	    float dx = lx * speed;
 	    float dy = ly * speed;
 
-	    x += dx;
-	    y += dy;
+	    worldX += dx;
+	    worldY += dy;
 
-	    x = Math.max(Data.weapon.width, Math.min(x, App.screenWidth - (width + Data.weapon.width + 10)));
-	    y = Math.max(Data.weapon.height, Math.min(y, App.screenHeight - (height + Data.weapon.height + 10)));
+	    //worldX = Math.max(Data.weapon.width, Math.min(worldX, App.screenWidth - (width + Data.weapon.width + 10)));
+	    //worldY = Math.max(Data.weapon.height, Math.min(worldY, App.screenHeight - (height + Data.weapon.height + 10)));
 
 	    if (lx < -0.1f) isFacingLeft = true;
 	    else if (lx > 0.1f) isFacingLeft = false;
@@ -89,11 +97,11 @@ public class Player extends Character {
 	    } else {
 	        spriteCur = walkingFrameLeft ? spriteL : spriteR;
 	    }
-
+	    
 	    if (isFacingLeft) {
-	        g2.drawImage(spriteCur, x + width, y, -width, height, null);
+	        g2.drawImage(spriteCur, screenX + width, screenY, -width, height, null);
 	    } else {
-	        g2.drawImage(spriteCur, x, y, width, height, null);
+	        g2.drawImage(spriteCur, screenX, screenY, width, height, null);
 	    }
 	}
 

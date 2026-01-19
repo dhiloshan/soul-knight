@@ -22,6 +22,7 @@ public class App extends JPanel {
 	public static ControllerState controllerState;
 	
 	public static int screenWidth = 1515, screenHeight = 910;
+	public static int tileSize = 40;
 	
 	Clip background;
 

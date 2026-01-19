@@ -5,7 +5,7 @@ import java.awt.Image;
 
 public class Character {
 	
-	public int x, y; // top left corner of the character
+	public int worldX, worldY; // top left corner of the character
 	public int width, height;
 	Image sprite; // image path
 	public boolean isFacingLeft = false;
@@ -14,16 +14,16 @@ public class Character {
 		this.sprite = sprite;
 		this.width = width;
 		this.height = height;
-		this.x = sx;
-		this.y = sy;
+		this.worldX = sx;
+		this.worldY = sy;
 	}
 	
 	public void render(Graphics2D g2) {
 		if(isFacingLeft) {
-			g2.drawImage(sprite, x + width, y, -width, height, null);
+			g2.drawImage(sprite, worldX + width, worldY, -width, height, null);
 		}
 		else {
-			g2.drawImage(sprite, x, y, width, height, null);
+			g2.drawImage(sprite, worldX, worldY, width, height, null);
 		}
 	}
 

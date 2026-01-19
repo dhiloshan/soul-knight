@@ -18,7 +18,7 @@ public class Enemy extends Character {
 	}
 	
 	private void enemyMove() {
-		x += 5; y += 5;
+		// nothing
 	}
 	
 	private boolean enemyGotHit() {
