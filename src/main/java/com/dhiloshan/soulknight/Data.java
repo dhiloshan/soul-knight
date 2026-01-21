@@ -1,23 +1,28 @@
 package com.dhiloshan.soulknight;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-
 public class Data {
-	public static HUD hud = new HUD();
-	public static Map map = new Map();
-	public static TileManager tileM = new TileManager(null);
-	public static CollisionChecker cChecker = new CollisionChecker( );
-	public static Player player = new Player(90, 90, 760, 455);
-	public static BadPistol weapon = new BadPistol();
-	public static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
-	public static Enemy trumpetFlower = new Enemy("Trumpet Flower", new ImageIcon(App.class.getResource("/assets/images/characters/TrumpetFlower.png")).getImage(), 55, 55, 600, 100);
-	
+    public static HUD hud;
+    public static Map map;
+    public static TileManager tileM;
+    public static CollisionChecker cChecker;
+    public static BadPistol weapon;
+    public static Player player;
+    public static ArrayList<Enemy> enemies = new ArrayList<>();
+    public static ArrayList<Item> items = new ArrayList<>();
+    public static Enemy trumpetFlower;
+
+    public static void setup(Graphics2D g2) {
+        hud = new HUD();
+        map = new Map();
+        cChecker = new CollisionChecker();
+        tileM = new TileManager(null);
+        weapon = new BadPistol();
+
+        player = new Player(42, 50, 8200, 7160);
+
+        new Chest(10440, 4880);
+    }
 }

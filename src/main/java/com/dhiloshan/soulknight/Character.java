@@ -5,14 +5,17 @@ import java.awt.Image;
 import java.awt.Rectangle;
 
 public class Character {
-	
-	public int worldX, worldY; // top left corner of the character
+
+	public int worldX, worldY;
 	public int width, height;
 	Image sprite; // image path
 	public boolean isFacingLeft = false;
 	public Rectangle solidArea;
 	public boolean collisionOn = false;
 	public float speed;
+
+	public float lx = 0f;
+	public float ly = 0f;
 
 	public Character(Image sprite, int width, int height, int sx, int sy) {
 		this.sprite = sprite;
@@ -21,14 +24,12 @@ public class Character {
 		this.worldX = sx;
 		this.worldY = sy;
 	}
-	
+
 	public void render(Graphics2D g2) {
-		if(isFacingLeft) {
+		if (isFacingLeft) {
 			g2.drawImage(sprite, worldX + width, worldY, -width, height, null);
-		}
-		else {
+		} else {
 			g2.drawImage(sprite, worldX, worldY, width, height, null);
 		}
 	}
-
 }
